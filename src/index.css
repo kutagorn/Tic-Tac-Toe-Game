@@ -43,7 +43,13 @@ header img {
 h1 {
   font-family: 'Caprasimo', cursive;
   font-size: 3rem;
-  margin: 0 auto 3rem auto;
+  margin: 0 auto 1rem auto;
+  color: #3f3b00;
+}
+h2 {
+  font-family: 'Caprasimo', cursive;
+  font-size: 2rem;
+  margin: 0 auto 2rem auto;
   color: #3f3b00;
 }
 
