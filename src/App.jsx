@@ -5,6 +5,12 @@ import GameBoard from "./components/GameBoard";
 import Log from "./components/Log";
 import { WINNING_COMBINATIONS } from "./winning-combinations";
 
+const initalGameBoard = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+];
+
 function deriveActivePlayer(gameTurns) {
   let currentPlayer = "X";
   if (gameTurns.length > 0 && gameTurns[0].player === "X") {
@@ -13,11 +19,7 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer;
   
 }
-const initalGameBoard = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-];
+
 
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
@@ -33,11 +35,16 @@ function App() {
     //this whole thing is called deriving state
   }
 
-  for (const combination of WINNING_COMBINATIONS){
-  const firstSquareSymbol
-  const secondSquareSymbol
-  const thirdSquareSymbol
+  let winner;
 
+  for (const combination of WINNING_COMBINATIONS){
+  const firstSquareSymbol = gameBoard[combination[0].row][combination[0].column];
+  const secondSquareSymbol = gameBoard[combination[1].row][combination[1].column];
+  const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].column];
+    if(firstSquareSymbol && firstSquareSymbol===secondSquareSymbol && firstSquareSymbol == thirdSquareSymbol )
+     {
+      winner = firstSquareSymbol
+     }
 }
 
   function handleSelectSquare(rowIndex, colIndex) {
@@ -66,6 +73,7 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
+        {winner && <p>You won, {winner}! </p> }
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
