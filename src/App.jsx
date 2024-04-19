@@ -6,7 +6,12 @@ import Log from "./components/Log";
 import { WINNING_COMBINATIONS } from "./winning-combinations";
 import GameOver from "./GameOver";
 
-const initalGameBoard = [
+const PLAYERS = {
+  X: "Kutay",
+  O: "Hazal",
+};
+
+const INITIAL_GAME_BOARD = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
@@ -20,17 +25,8 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer;
 }
 
-function App() {
-  const [players, setPlayers] = useState({
-    X: "Player 1",
-    O: "Player 2",
-  });
-
-  const [gameTurns, setGameTurns] = useState([]);
-  //const [hasWinner, setHasWinner] = useState(false) No need app function refreshes eveytime a box has been selected.
-  // const [activePlayer, setActivePlayer] = useState('X'); no need to use two states need to add some derived state
-  const activePlayer = deriveActivePlayer(gameTurns);
-  let gameBoard = [...initalGameBoard.map((array) => [...array])];
+function deriveGameBoard(gameTurns) {
+  let gameBoard = [...INITIAL_GAME_BOARD.map((array) => [...array])];
   /* we need to create a deep copy of the initialGameBoard so when we restart we can reset it
   with this map we go through all the inner arrays, and for every inner array, we create a copy.
   Which contains the existing array elements spread into it.
@@ -44,7 +40,10 @@ function App() {
     gameBoard[row][col] = player;
     //this whole thing is called deriving state
   }
+  return gameBoard;
+}
 
+function deriveWinner(gameBoard, players) {
   let winner;
 
   for (const combination of WINNING_COMBINATIONS) {
@@ -62,6 +61,20 @@ function App() {
       winner = players[firstSquareSymbol];
     }
   }
+
+  return winner;
+}
+
+function App() {
+  const [players, setPlayers] = useState(PLAYERS);
+
+  const [gameTurns, setGameTurns] = useState([]);
+  //const [hasWinner, setHasWinner] = useState(false) No need app function refreshes eveytime a box has been selected.
+  // const [activePlayer, setActivePlayer] = useState('X'); no need to use two states need to add some derived state
+  const activePlayer = deriveActivePlayer(gameTurns);
+
+  const gameBoard = deriveGameBoard(gameTurns);
+  const winner = deriveWinner(gameBoard, players);
 
   const hasDraw = gameTurns.length === 9 && !winner;
 
@@ -94,13 +107,13 @@ function App() {
       <div id="game-container">
         <ol id="players" className="highlight-player">
           <Player
-            initalName="Player 1"
+            initalName={PLAYERS.X}
             symbol="X"
             isActive={activePlayer === "X"}
             onChangeName={handlePlayerNameChange}
           />
           <Player
-            initalName="Player 2"
+            initalName={PLAYERS.O}
             symbol="O"
             isActive={activePlayer === "O"}
             onChangeName={handlePlayerNameChange}
