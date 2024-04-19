@@ -25,7 +25,13 @@ function App() {
   //const [hasWinner, setHasWinner] = useState(false) No need app function refreshes eveytime a box has been selected.
   // const [activePlayer, setActivePlayer] = useState('X'); no need to use two states need to add some derived state
   const activePlayer = deriveActivePlayer(gameTurns);
-  let gameBoard = initalGameBoard;
+  let gameBoard = [...initalGameBoard.map((array) => [...array])];
+  /* we need to create a deep copy of the initialGameBoard so when we restart we can reset it
+  with this map we go through all the inner arrays, and for every inner array, we create a copy.
+  Which contains the existing array elements spread into it.
+  before the restart function this game board looked like this;
+  let gameBoard = initialGameBoard;
+  */
 
   for (const turn of gameTurns) {
     const { square, player } = turn;
@@ -65,6 +71,10 @@ function App() {
       return updatedTurns;
     });
   }
+  function handleRestart() {
+    setGameTurns([]);
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -80,7 +90,9 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
-        {(winner || hasDraw) && <GameOver winner={winner} />}
+        {(winner || hasDraw) && (
+          <GameOver winner={winner} onRestart={handleRestart} />
+        )}
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
