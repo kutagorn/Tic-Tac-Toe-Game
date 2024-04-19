@@ -13,12 +13,33 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer;
   
 }
-
+const initalGameBoard = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+];
 
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
+  //const [hasWinner, setHasWinner] = useState(false) No need app function refreshes eveytime a box has been selected.
   // const [activePlayer, setActivePlayer] = useState('X'); no need to use two states need to add some derived state
   const activePlayer = deriveActivePlayer(gameTurns);
+  let gameBoard = initalGameBoard;
+
+  for (const turn of gameTurns) {
+    const { square, player } = turn;
+    const { row, col } = square;
+    gameBoard[row][col] = player;
+    //this whole thing is called deriving state
+  }
+
+  for (const combination of WINNING_COMBINATIONS){
+  const firstSquareSymbol
+  const secondSquareSymbol
+  const thirdSquareSymbol
+
+}
+
   function handleSelectSquare(rowIndex, colIndex) {
     // setActivePlayer((curActivePlayer)=>curActivePlayer ==='X' ? 'O' : 'X' );
     setGameTurns((prevTurns) => {
@@ -45,7 +66,7 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
-        <GameBoard onSelectSquare={handleSelectSquare} turns={gameTurns} />
+        <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
     </main>
