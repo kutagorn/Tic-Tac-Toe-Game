@@ -4,6 +4,7 @@ import Player from "./components/Player";
 import GameBoard from "./components/GameBoard";
 import Log from "./components/Log";
 import { WINNING_COMBINATIONS } from "./winning-combinations";
+import GameOver from "./GameOver";
 
 const initalGameBoard = [
   [null, null, null],
@@ -17,9 +18,7 @@ function deriveActivePlayer(gameTurns) {
     currentPlayer = "O";
   }
   return currentPlayer;
-  
 }
-
 
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
@@ -37,15 +36,23 @@ function App() {
 
   let winner;
 
-  for (const combination of WINNING_COMBINATIONS){
-  const firstSquareSymbol = gameBoard[combination[0].row][combination[0].column];
-  const secondSquareSymbol = gameBoard[combination[1].row][combination[1].column];
-  const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].column];
-    if(firstSquareSymbol && firstSquareSymbol===secondSquareSymbol && firstSquareSymbol == thirdSquareSymbol )
-     {
-      winner = firstSquareSymbol
-     }
-}
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSquareSymbol =
+      gameBoard[combination[0].row][combination[0].column];
+    const secondSquareSymbol =
+      gameBoard[combination[1].row][combination[1].column];
+    const thirdSquareSymbol =
+      gameBoard[combination[2].row][combination[2].column];
+    if (
+      firstSquareSymbol &&
+      firstSquareSymbol === secondSquareSymbol &&
+      firstSquareSymbol == thirdSquareSymbol
+    ) {
+      winner = firstSquareSymbol;
+    }
+  }
+
+  const hasDraw = gameTurns.length === 9 && !winner;
 
   function handleSelectSquare(rowIndex, colIndex) {
     // setActivePlayer((curActivePlayer)=>curActivePlayer ==='X' ? 'O' : 'X' );
@@ -73,7 +80,7 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
-        {winner && <p>You won, {winner}! </p> }
+        {(winner || hasDraw) && <GameOver winner={winner} />}
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
