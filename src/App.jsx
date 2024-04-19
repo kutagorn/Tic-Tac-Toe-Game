@@ -22,9 +22,9 @@ function deriveActivePlayer(gameTurns) {
 
 function App() {
   const [players, setPlayers] = useState({
-    'X': 'Player 1',
-    'O' : 'Player 2'
-  })
+    X: "Player 1",
+    O: "Player 2",
+  });
 
   const [gameTurns, setGameTurns] = useState([]);
   //const [hasWinner, setHasWinner] = useState(false) No need app function refreshes eveytime a box has been selected.
@@ -59,7 +59,7 @@ function App() {
       firstSquareSymbol === secondSquareSymbol &&
       firstSquareSymbol == thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol;
+      winner = players[firstSquareSymbol];
     }
   }
 
@@ -80,11 +80,11 @@ function App() {
     setGameTurns([]);
   }
 
-  function handlePlayerNameChange(symbol, newName){
-    setPlayers(prevPlayers => {
+  function handlePlayerNameChange(symbol, newName) {
+    setPlayers((prevPlayers) => {
       return {
         ...prevPlayers,
-        [symbol]: newName
+        [symbol]: newName,
       };
     });
   }
@@ -97,11 +97,13 @@ function App() {
             initalName="Player 1"
             symbol="X"
             isActive={activePlayer === "X"}
+            onChangeName={handlePlayerNameChange}
           />
           <Player
             initalName="Player 2"
             symbol="O"
             isActive={activePlayer === "O"}
+            onChangeName={handlePlayerNameChange}
           />
         </ol>
         {(winner || hasDraw) && (

@@ -1,11 +1,14 @@
 import { useState } from "react";
 
-export default function Player({ initalName, symbol, isActive }) {
+export default function Player({ initalName, symbol, isActive, onChangeName }) {
   const [playerName, setPlayerName] = useState(initalName);
   const [isEditing, setIsEditing] = useState(false);
 
   function handleEditClick() {
     setIsEditing((editing) => !editing); //React docs says do not use setIsEditing(!isEditing); Because of sheduling state issues
+    if (isEditing) {
+      onChangeName(symbol, playerName);
+    }
   }
   function handleChange(event) {
     setPlayerName(event.target.value);
@@ -21,7 +24,7 @@ export default function Player({ initalName, symbol, isActive }) {
   }
 
   return (
-    <li className={isActive ? 'active' : undefined }>
+    <li className={isActive ? "active" : undefined}>
       <span className="player">
         {editablePlayerName}
         <span className="player-symbol">{symbol}</span>
